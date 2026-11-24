@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>몽유 클레이 워크스루</title>
+<title>몽유 워크스루</title>
 <style>
 :root{--ink:#1e1c1a;--paper:#f3efe6;--seal:#b8322a;--grey:#6d675e}
 *{box-sizing:border-box}html,body{margin:0;height:100%;color-scheme:light;overflow:hidden;background:#dfe3e6;font-family:"Malgun Gothic",sans-serif;color:var(--ink);touch-action:none}
@@ -24,11 +24,11 @@ button:focus-visible{outline:2px solid var(--seal);outline-offset:1px}
 @media (pointer:coarse){#stick{display:block}#help{display:none}}
 </style></head><body><canvas id="c"></canvas>
 <div id="top"><div class="seal">夢<br>遊</div><div><b>몽유 夢遊</b><div id="where"></div></div></div>
-<div id="opts"><button id="fly">날기 F</button><button id="edge" class="on">선 E</button><button id="full">전체화면</button></div>
-<div id="help">W A S D 걷기 · Shift 빨리<br>화면 클릭 → 마우스로 둘러보기 (Esc 해제)<br>또는 끌어서 둘러보기 · 방향키<br>문은 다가가면 열림</div>
+<div id="opts"><button id="tint" class="on">색 T</button><button id="fly">날기 F</button><button id="edge" class="on">선 E</button><button id="full">전체화면</button></div>
+<div id="help">W A S D 걷기 · Shift 빨리<br>화면 클릭 → 마우스로 둘러보기 (Esc 해제)<br>또는 끌어서 둘러보기 · 방향키<br>문은 다가가면 열림 · T 색 / 클레이</div>
 <div id="dot"></div><div id="places"></div><div id="stick"><i></i></div>
-<div id="cover"><div><div class="seal">夢<br>遊</div><h1>몽유 夢遊</h1><p>그림 속을 걷는 집 — 클레이 모델 워크스루</p><p id="msg">모델 여는 중…</p><button id="go" disabled>들어가기</button></div></div>
-<script type="application/json" id="meta">{"groups": [{"name": "clay", "pos": [0, 1093230], "idx": [4372920, 1906947], "tris": 635649}, {"name": "dark", "pos": [12000708, 582699], "idx": [14331504, 1001127], "tris": 333709}, {"name": "door0", "pos": [18336012, 3576], "idx": [18350316, 7020], "tris": 2340}, {"name": "door1", "pos": [18378396, 3576], "idx": [18392700, 7020], "tris": 2340}, {"name": "door2", "pos": [18420780, 3576], "idx": [18435084, 7020], "tris": 2340}, {"name": "door3", "pos": [18463164, 3576], "idx": [18477468, 7020], "tris": 2340}, {"name": "door4", "pos": [18505548, 3576], "idx": [18519852, 7020], "tris": 2340}, {"name": "door5", "pos": [18547932, 3576], "idx": [18562236, 7020], "tris": 2340}, {"name": "door6", "pos": [18590316, 3576], "idx": [18604620, 7020], "tris": 2340}, {"name": "door7", "pos": [18632700, 3576], "idx": [18647004, 7020], "tris": 2340}, {"name": "far_clay", "pos": [18675084, 520044], "idx": [20755260, 366222], "tris": 122074}, {"name": "far_ground", "pos": [22220148, 198153], "idx": [23012760, 371052], "tris": 123684}, {"name": "far_veg", "pos": [24496968, 389088], "idx": [26053320, 741120], "tris": 247040}, {"name": "glass", "pos": [29017800, 2172], "idx": [29026488, 3150], "tris": 1050}, {"name": "ground", "pos": [29039088, 4239], "idx": [29056044, 7590], "tris": 2530}, {"name": "veg", "pos": [29086404, 3870405], "idx": [44568024, 3799596], "tris": 1266532}, {"name": "water", "pos": [59766408, 984], "idx": [59770344, 1476], "tris": 492}], "doors": [{"lo": [-2.367000102996826, -2.7699999809265137, 1.2079999446868896], "hi": [-1.6329998970031738, -2.7300000190734863, 3.2669999599456787], "axis": 0, "sw": 1}, {"lo": [-1.5699999332427979, -5.266999244689941, 1.2079999446868896], "hi": [-1.5299999713897705, -4.5329999923706055, 3.2669999599456787], "axis": 1, "sw": 1}, {"lo": [-2.567000150680542, -2.9700000286102295, 4.457999229431152], "hi": [-1.8329999446868896, -2.930000066757202, 6.4670000076293945], "axis": 0, "sw": 1}, {"lo": [-2.067000150680542, -3.370000123977661, 7.607999801635742], "hi": [-1.3329999446868896, -3.330000162124634, 9.666999816894531], "axis": 0, "sw": 1}, {"lo": [-1.3669999837875366, 3.2799999713897705, 4.4079999923706055], "hi": [-0.6330000162124634, 3.319999933242798, 6.4670000076293945], "axis": 0, "sw": 1}, {"lo": [-4.0169997215271, 4.979999542236328, 4.4079999923706055], "hi": [-3.183000087738037, 5.0199995040893555, 6.567000389099121], "axis": 0, "sw": 1}, {"lo": [-1.4602659940719604, -1.0199999809265137, 4.4079999923706055], "hi": [-0.5401705503463745, -0.9800000190734863, 6.767000198364258], "axis": 0, "sw": 1}, {"lo": [-1.4670000076293945, 1.3050000667572021, 4.4079999923706055], "hi": [-0.5329999923706055, 1.3450000286102295, 6.767000198364258], "axis": 0, "sw": 1}], "col": [59776248, 870930]}</script>
+<div id="cover"><div><div class="seal">夢<br>遊</div><h1>몽유 夢遊</h1><p>그림 속을 걷는 집 — 걸어서 둘러보기</p><p id="msg">모델 여는 중…</p><button id="go" disabled>들어가기</button></div></div>
+<script type="application/json" id="meta">{"groups": [{"name": "clay", "pos": [0, 1093230], "idx": [4372920, 1906947], "col": [12000708, 1457640], "tris": 635649}, {"name": "dark", "pos": [13458348, 582699], "idx": [15789144, 1001127], "col": [19793652, 776932], "tris": 333709}, {"name": "door0", "pos": [20570584, 3576], "idx": [20584888, 7020], "col": [20612968, 4768], "tris": 2340}, {"name": "door1", "pos": [20617736, 3576], "idx": [20632040, 7020], "col": [20660120, 4768], "tris": 2340}, {"name": "door2", "pos": [20664888, 3576], "idx": [20679192, 7020], "col": [20707272, 4768], "tris": 2340}, {"name": "door3", "pos": [20712040, 3576], "idx": [20726344, 7020], "col": [20754424, 4768], "tris": 2340}, {"name": "door4", "pos": [20759192, 3576], "idx": [20773496, 7020], "col": [20801576, 4768], "tris": 2340}, {"name": "door5", "pos": [20806344, 3576], "idx": [20820648, 7020], "col": [20848728, 4768], "tris": 2340}, {"name": "door6", "pos": [20853496, 3576], "idx": [20867800, 7020], "col": [20895880, 4768], "tris": 2340}, {"name": "door7", "pos": [20900648, 3576], "idx": [20914952, 7020], "col": [20943032, 4768], "tris": 2340}, {"name": "far_clay", "pos": [20947800, 520044], "idx": [23027976, 366222], "col": [24492864, 693392], "tris": 122074}, {"name": "far_ground", "pos": [25186256, 198153], "idx": [25978868, 371052], "col": [27463076, 264204], "tris": 123684}, {"name": "far_veg", "pos": [27727280, 389088], "idx": [29283632, 741120], "col": [32248112, 518784], "tris": 247040}, {"name": "glass", "pos": [32766896, 2172], "idx": [32775584, 3150], "col": [32788184, 2896], "tris": 1050}, {"name": "ground", "pos": [32791080, 4239], "idx": [32808036, 7590], "col": [32838396, 5652], "tris": 2530}, {"name": "veg", "pos": [32844048, 4612701], "idx": [51294852, 3979596], "col": [67213236, 6150268], "tris": 1326532}, {"name": "water", "pos": [73363504, 984], "idx": [73367440, 1476], "col": [73373344, 1312], "tris": 492}], "doors": [{"lo": [-2.367000102996826, -2.7699999809265137, 1.2079999446868896], "hi": [-1.6329998970031738, -2.7300000190734863, 3.2669999599456787], "axis": 0, "sw": 1}, {"lo": [-1.5699999332427979, -5.266999244689941, 1.2079999446868896], "hi": [-1.5299999713897705, -4.5329999923706055, 3.2669999599456787], "axis": 1, "sw": 1}, {"lo": [-2.567000150680542, -2.9700000286102295, 4.457999229431152], "hi": [-1.8329999446868896, -2.930000066757202, 6.4670000076293945], "axis": 0, "sw": 1}, {"lo": [-2.067000150680542, -3.370000123977661, 7.607999801635742], "hi": [-1.3329999446868896, -3.330000162124634, 9.666999816894531], "axis": 0, "sw": 1}, {"lo": [-1.3669999837875366, 3.2799999713897705, 4.4079999923706055], "hi": [-0.6330000162124634, 3.319999933242798, 6.4670000076293945], "axis": 0, "sw": 1}, {"lo": [-4.0169997215271, 4.979999542236328, 4.4079999923706055], "hi": [-3.183000087738037, 5.0199995040893555, 6.567000389099121], "axis": 0, "sw": 1}, {"lo": [-1.4602659940719604, -1.0199999809265137, 4.4079999923706055], "hi": [-0.5401705503463745, -0.9800000190734863, 6.767000198364258], "axis": 0, "sw": 1}, {"lo": [-1.4670000076293945, 1.3050000667572021, 4.4079999923706055], "hi": [-0.5329999923706055, 1.3450000286102295, 6.767000198364258], "axis": 0, "sw": 1}], "col": [73374656, 870930]}</script>
 <script type="module">
 const $ = (i) => document.getElementById(i), msg = (t) => $("msg").textContent = t;
 try {
@@ -46,9 +46,23 @@ const PHONE = matchMedia('(pointer:coarse)').matches; R.setPixelRatio(Math.min(d
 const scene = new THREE.Scene(); const SKY = new THREE.Color(0xdde4ea); scene.background = SKY; scene.fog = new THREE.Fog(SKY, 120, 1500);
 const cam = new THREE.PerspectiveCamera(68, 1, 0.06, 3000); cam.up.set(0, 0, 1);
 const lin = (r, g, b) => new THREE.Color().setRGB(r, g, b, THREE.LinearSRGBColorSpace);
-const mk = (c, rough = 0.85, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: rough, flatShading: true, side: THREE.DoubleSide, ...o });
+const UC = { value: 1 };
+const GLSL = `
+float h3(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float n3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(mix(h3(i),h3(i+vec3(1,0,0)),f.x),mix(h3(i+vec3(0,1,0)),h3(i+vec3(1,1,0)),f.x),f.y),mix(mix(h3(i+vec3(0,0,1)),h3(i+vec3(1,0,1)),f.x),mix(h3(i+vec3(0,1,1)),h3(i+vec3(1,1,1)),f.x),f.y),f.z);}`;
+const mk = (c, rough = 0.85, o = {}) => { const m = new THREE.MeshStandardMaterial({ color: c, roughness: rough, flatShading: true, side: THREE.DoubleSide, ...o });
+  m.onBeforeCompile = (s) => { s.uniforms.uC = UC;
+    s.vertexShader = "attribute vec4 acol;varying vec4 vA;varying vec3 vO;\n" + s.vertexShader.replace("#include <begin_vertex>", "#include <begin_vertex>\nvA=acol;vO=position;");
+    s.fragmentShader = "varying vec4 vA;varying vec3 vO;uniform float uC;\n" + GLSL + s.fragmentShader.replace("#include <color_fragment>", `#include <color_fragment>
+{vec3 t=pow(vA.rgb,vec3(2.2));int kd=int(floor(vA.a*255.+.5));vec3 fn=normalize(cross(dFdx(vO),dFdy(vO)));float px=max(length(dFdx(vO)),length(dFdy(vO)));
+ if(kd==1){float k1=clamp(1.5-px*240.,0.,1.),k2=clamp(1.5-px*60.,0.,1.);t*=1.+(n3(vO*240.)-.5)*.75*k1+(n3(vO*60.)-.5)*.28*k2+(n3(vO*2.2)-.5)*.14;}
+ else if(kd==2){vec3 q=abs(fn.z)>.5?vec3(vO.x*2.5,vO.y*46.,vO.z*46.):vec3((vO.x+vO.y)*46.,(vO.x-vO.y)*46.,vO.z*2.5);float k=clamp(1.5-px*46.,0.,1.);t*=1.+(n3(q)-.5)*.5*k+(n3(q*.27)-.5)*.3;}
+ else if(kd==3){t*=1.+(n3(vO*1.6)-.5)*.12+(n3(vO*26.)-.5)*.12*clamp(1.5-px*26.,0.,1.);}
+ else if(kd==4){t*=1.+(n3(vO*.9)-.5)*.5+(n3(vO*9.)-.5)*.45*clamp(1.5-px*9.,0.,1.);}
+ diffuseColor.rgb=mix(diffuseColor.rgb,t,uC);}`); };
+  m.customProgramCacheKey = () => "walk"; return m; };
 const MAT = { clay: mk(lin(.80, .785, .755)), dark: mk(lin(.34, .335, .325), .7), veg: mk(lin(.60, .65, .57), .95), ground: mk(lin(.56, .55, .53), 1), water: mk(lin(.42, .50, .54), .12, { metalness: .1 }),
-  glass: mk(lin(.62, .72, .76), .05, { transparent: true, opacity: .16, depthWrite: false }) };
+  glass: new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, flatShading: true, color: lin(.62, .72, .76), roughness: .05, transparent: true, opacity: .16, depthWrite: false }) };
 const doors = META.doors.map((d) => ({ ...d, g: new THREE.Group(), a: 0 }));
 for (const g of META.groups) {
   let idx = U(g.idx);
@@ -57,10 +71,10 @@ for (const g of META.groups) {
     const inb = (v) => p[v * 3] > -12.37 && p[v * 3] < -12.2 && p[v * 3 + 1] > -.01 && p[v * 3 + 1] < .935 && p[v * 3 + 2] > 5.41 && p[v * 3 + 2] < 7.79;
     for (let k = 0; k < idx.length; k += 3) if (inb(idx[k]) && inb(idx[k + 1]) && inb(idx[k + 2])) leaf.push(idx[k], idx[k + 1], idx[k + 2]); else { rest[r++] = idx[k]; rest[r++] = idx[k + 1]; rest[r++] = idx[k + 2]; }
     idx = rest.slice(0, r); const q = new Float32Array(leaf.length * 3), n = new Int8Array(leaf.length * 3); leaf.forEach((v, k) => { for (let a = 0; a < 3; a++) q[k * 3 + a] = p[v * 3 + a]; n[k * 3 + 2] = 127; });
-    const lg = new THREE.BufferGeometry(); lg.setAttribute("position", new THREE.BufferAttribute(q, 3)); lg.setAttribute("normal", new THREE.BufferAttribute(n, 3, true));
+    const lg = new THREE.BufferGeometry(), gc = new Uint8Array(BUF, g.col[0], g.col[1]), lc = new Uint8Array(leaf.length * 4); leaf.forEach((v, k) => { for (let a = 0; a < 4; a++) lc[k * 4 + a] = gc[v * 4 + a]; }); lg.setAttribute("acol", new THREE.BufferAttribute(lc, 4, true)); lg.setAttribute("position", new THREE.BufferAttribute(q, 3)); lg.setAttribute("normal", new THREE.BufferAttribute(n, 3, true));
     const m = new THREE.Mesh(lg, MAT.clay), d = { g: new THREE.Group(), a: 0, sign: 1, c: [-12.28, .46, 5.42], far: 1.2 }; m.castShadow = m.receiveShadow = true; m.position.set(12.28, -.93, 0); d.g.position.set(-12.28, .93, 0); d.g.add(m); scene.add(d.g); doors.push(d);
   }
-  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(F(g.pos), 3)); geo.setIndex(new THREE.BufferAttribute(idx, 1));
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(F(g.pos), 3)); geo.setIndex(new THREE.BufferAttribute(idx, 1)); geo.setAttribute("acol", new THREE.BufferAttribute(new Uint8Array(BUF, g.col[0], g.col[1]), 4, true));
   { const n = new Int8Array(g.pos[1]); for (let k = 2; k < n.length; k += 3) n[k] = 127; geo.setAttribute("normal", new THREE.BufferAttribute(n, 3, true)); }   // 면 법선은 셰이더가 계산 · 법선이 없으면 그림자 좌표가 NaN 이 됨
   const base = g.name.replace("far_", ""), dk = base.match(/^door(\d+)$/), m = new THREE.Mesh(geo, dk ? MAT.clay : MAT[base]);
   const far = g.name.startsWith("far_"); m.castShadow = base !== "glass" && base !== "water" && !far; m.receiveShadow = base !== "glass";
@@ -128,7 +142,7 @@ cv.addEventListener("pointerdown", (e) => { drag = [e.clientX, e.clientY, 0]; cv
 cv.addEventListener("pointermove", (e) => { let dx = 0, dy = 0, s = .0022; if (document.pointerLockElement === cv) { dx = e.movementX; dy = e.movementY; } else if (drag) { dx = -(e.clientX - drag[0]); dy = -(e.clientY - drag[1]); drag[2] += Math.abs(dx) + Math.abs(dy); drag[0] = e.clientX; drag[1] = e.clientY; s = .0038; } else return;
   yaw -= dx * s; pitch = Math.max(-1.45, Math.min(1.45, pitch - dy * s)); });
 cv.addEventListener("pointerup", (e) => { if (drag && drag[2] < 4 && e.pointerType === "mouse" && !document.pointerLockElement) { try { const r = cv.requestPointerLock(); if (r && r.catch) r.catch(() => {}); } catch (_) {} } drag = null; });
-addEventListener("keydown", (e) => { if (e.ctrlKey || e.metaKey) return; K[e.code] = 1; if (e.code === "KeyF") setFly(!fly); if (e.code === "KeyE") $("edge").click(); if (/^Arrow|Space/.test(e.code)) e.preventDefault(); });
+addEventListener("keydown", (e) => { if (e.ctrlKey || e.metaKey) return; K[e.code] = 1; if (e.code === "KeyF") setFly(!fly); if (e.code === "KeyT") $("tint").click(); if (e.code === "KeyE") $("edge").click(); if (/^Arrow|Space/.test(e.code)) e.preventDefault(); });
 addEventListener("keyup", (e) => K[e.code] = 0); addEventListener("blur", () => { for (const k in K) K[k] = 0; });
 $("fly").onclick = () => { setFly(!fly); $("fly").blur(); }; $("full").onclick = () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.().catch(() => {}); $("full").blur(); };
 const st = { x: 0, y: 0 }; { const s = $("stick"), i = s.firstElementChild; const mv = (e) => { const r = s.getBoundingClientRect(); let x = (e.clientX - r.left - 60) / 50, y = (e.clientY - r.top - 60) / 50; const l = Math.max(1, Math.hypot(x, y)); st.x = x / l; st.y = -y / l; i.style.transform = `translate(${st.x * 40}px,${-st.y * 40}px)`; };
@@ -164,18 +178,20 @@ void main(){vec3 p=vp(v);if(-p.z>90.){gl_FragColor=vec4(1.);return;}vec3 n=nrm(v
   vec2 o=vec2(cos(an),sin(an))*sqrt(fi)*R*vec2(Pm[0][0],Pm[1][1])*.5/max(-p.z,.2);vec3 q=vp(v+o)-p;float L=length(q);
   s+=max(0.,dot(n,q)/(L+1e-4)-.09)*smoothstep(R*1.4,R*.2,L);w+=1.;}
  gl_FragColor=vec4(vec3(clamp(1.-1.75*s/w,0.,1.)),1.);}` });
-const fin = new THREE.ShaderMaterial({ depthTest: false, depthWrite: false, vertexShader: VS, uniforms: { tC: {}, tD: {}, tA: {}, iP: aoM.uniforms.iP, Pm: aoM.uniforms.Pm, px: aoM.uniforms.px, edge: { value: 1 } },
-  fragmentShader: COMMON + `uniform sampler2D tC,tA;uniform float edge;
+const fin = new THREE.ShaderMaterial({ depthTest: false, depthWrite: false, vertexShader: VS, uniforms: { tC: {}, tD: {}, tA: {}, iP: aoM.uniforms.iP, Pm: aoM.uniforms.Pm, px: aoM.uniforms.px, edge: { value: 1 }, uC: UC },
+  fragmentShader: COMMON + `uniform sampler2D tC,tA;uniform float edge,uC;
 float zl(vec2 u){return -vp(u).z;}
 void main(){vec3 c=texture2D(tC,v).rgb;float z=zl(v),ao=0.,w=0.;
  for(int x=-2;x<2;x++)for(int y=-2;y<2;y++){vec2 u=v+(vec2(x,y)+.5)*px;float k=exp(-abs(zl(u)-z)*14./max(z*.15,.2));ao+=texture2D(tA,u).x*k;w+=k;}
- ao/=max(w,1e-3);c*=mix(vec3(.30,.29,.31),vec3(1.),pow(ao,1.7));
+ ao/=max(w,1e-3);c*=mix(vec3(.30,.29,.31),vec3(1.),pow(ao,mix(1.7,1.5,uC)));
  if(edge>.5&&z<70.){vec3 p=vp(v),n=nrm(v,p);float e=0.;
   for(int i=0;i<2;i++){vec2 d=i==0?vec2(px.x,0.):vec2(0.,px.y);vec3 A=vp(v+d),B=vp(v-d);
    float k=abs(A.z+B.z-2.*p.z)/max(z*z*.012,.006*z);e=max(e,smoothstep(.35,1.6,k));
    e=max(e,.75*smoothstep(.35,.9,1.-dot(nrm(v+d,A),n)));}
-  c=mix(c,c*.34,e*.8*smoothstep(70.,12.,z));}
- c*=1.02;c=(c*(2.51*c+.03))/(c*(2.43*c+.59)+.14);c=pow(clamp(c,0.,1.),vec3(1./2.2));gl_FragColor=vec4(c,1.);}` });
+  c=mix(c,c*.34,e*mix(.8,.5,uC)*smoothstep(70.,12.,z));}
+ c*=mix(1.02,1.5,uC*step(z,2500.));c=(c*(2.51*c+.03))/(c*(2.43*c+.59)+.14);c=pow(clamp(c,0.,1.),vec3(1./2.2));gl_FragColor=vec4(c,1.);}` });
+let want = 1; const SK0 = new THREE.Color(0xdde4ea), SK1 = new THREE.Color(0xb9d3ea);
+$("tint").onclick = () => { want = want ? 0 : 1; $("tint").classList.toggle("on", !!want); $("tint").blur(); };
 $("edge").onclick = () => { const on = fin.uniforms.edge.value < .5; fin.uniforms.edge.value = on ? 1 : 0; $("edge").classList.toggle("on", on); $("edge").blur(); };
 function resize() {
   const w = innerWidth, h = innerHeight; if (!w || !h) return; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); R.getDrawingBufferSize(size);
@@ -185,7 +201,7 @@ function resize() {
 addEventListener("resize", resize); resize();
 let last = performance.now(), lab = "";
 function frame(now) {
-  requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!rt) return; step(dt);
+  requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!rt) return; step(dt); UC.value += (want - UC.value) * Math.min(1, dt * 6); if (Math.abs(want - UC.value) < .003) UC.value = want; SKY.copy(SK0).lerp(SK1, UC.value); scene.background = SKY; scene.fog.color.copy(SKY);
   for (const d of doors) { const D = Math.hypot(P.x - d.c[0], P.y - d.c[1]), want = D < (d.open ? 2.2 : 1.6) + (d.far || 0) && Math.abs(P.z - d.c[2]) < 1.2; d.open = want; const t = want ? 1.62 : 0; if (Math.abs(t - d.a) > .002) { d.a += (t - d.a) * Math.min(1, dt * 4.5); d.g.rotation.z = d.sign * d.a; R.shadowMap.needsUpdate = true; } }
   cam.position.set(P.x, P.y, cur + EYE); cam.lookAt(P.x + Math.cos(yaw) * Math.cos(pitch), P.y + Math.sin(yaw) * Math.cos(pitch), cur + EYE + Math.sin(pitch));
   const r = ROOM.find(([, a, b, c, d, e, g]) => P.x > a && P.x < b && P.y > c && P.y < d && P.z > e && P.z < g), nl = fly ? "날아서 보기" : r ? r[0] : "그림 속을 걷는 집"; if (nl !== lab) $("where").textContent = lab = nl;
@@ -193,7 +209,7 @@ function frame(now) {
 }
 go(0); R.compile(scene, cam); requestAnimationFrame(frame);
 window.__w = { P, go, PL, ground, push, set: (a, b) => { yaw = a; pitch = b; }, R, K, step, doors, sun, hemi, fin, scene, get fly() { return fly; } };
-msg("W A S D 로 걷고 마우스로 둘러봅니다"); $("go").disabled = false; $("go").onclick = () => { $("cover").remove(); }; $("go").focus();
+UC.value = 1; msg("W A S D 로 걷고 마우스로 둘러봅니다"); $("go").disabled = false; $("go").onclick = () => { $("cover").remove(); }; $("go").focus();
 } catch (e) { msg("열지 못했습니다: " + e.message); console.error(e); }
 </script>
 </body></html>
