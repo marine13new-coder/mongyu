@@ -53,7 +53,7 @@ float n3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(mix(h
 const mk = (c, rough = 0.85, o = {}) => { const m = new THREE.MeshStandardMaterial({ color: c, roughness: rough, flatShading: true, side: THREE.DoubleSide, ...o });
   m.onBeforeCompile = (s) => { s.uniforms.uC = UC;
     s.vertexShader = "attribute vec4 acol;varying vec4 vA;varying vec3 vO;\n" + s.vertexShader.replace("#include <begin_vertex>", "#include <begin_vertex>\nvA=acol;vO=position;");
-    s.fragmentShader = "varying vec4 vA;varying vec3 vO;uniform float uC;\n" + GLSL + s.fragmentShader.replace("#include <color_fragment>", `#include <color_fragment>
+    s.fragmentShader = "varying vec4 vA;varying vec3 vO;uniform float uC;\n" + GLSL + String.fromCharCode(10) + s.fragmentShader.replace("#include <color_fragment>", `#include <color_fragment>
 {vec3 t=pow(vA.rgb,vec3(2.2));int kd=int(floor(vA.a*255.+.5));vec3 fn=normalize(cross(dFdx(vO),dFdy(vO)));float px=max(length(dFdx(vO)),length(dFdy(vO)));
  if(kd==1){float k1=clamp(1.5-px*240.,0.,1.),k2=clamp(1.5-px*60.,0.,1.);t*=1.+(n3(vO*240.)-.5)*.75*k1+(n3(vO*60.)-.5)*.28*k2+(n3(vO*2.2)-.5)*.14;}
  else if(kd==2){vec3 q=abs(fn.z)>.5?vec3(vO.x*2.5,vO.y*46.,vO.z*46.):vec3((vO.x+vO.y)*46.,(vO.x-vO.y)*46.,vO.z*2.5);float k=clamp(1.5-px*46.,0.,1.);t*=1.+(n3(q)-.5)*.5*k+(n3(q*.27)-.5)*.3;}
