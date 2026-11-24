@@ -52,6 +52,7 @@ const MAT = { clay: mk(lin(.80, .785, .755)), dark: mk(lin(.34, .335, .325), .7)
 const doors = META.doors.map((d) => ({ ...d, g: new THREE.Group(), a: 0 }));
 for (const g of META.groups) {
   const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(F(g.pos), 3)); geo.setIndex(new THREE.BufferAttribute(U(g.idx), 1));
+  { const n = new Int8Array(g.pos[1]); for (let k = 2; k < n.length; k += 3) n[k] = 127; geo.setAttribute("normal", new THREE.BufferAttribute(n, 3, true)); }   // 면 법선은 셰이더가 계산 · 법선이 없으면 그림자 좌표가 NaN 이 됨
   const base = g.name.replace("far_", ""), dk = base.match(/^door(\d+)$/), m = new THREE.Mesh(geo, dk ? MAT.clay : MAT[base]);
   const far = g.name.startsWith("far_"); m.castShadow = base !== "glass" && base !== "water" && !far; m.receiveShadow = base !== "glass";
   if (base === "glass") m.renderOrder = 2;
@@ -63,7 +64,7 @@ for (const g of META.groups) {
 }
 // 빛: 해(그림자) + 하늘 · 바닥 반사 + 약한 보조광 둘 (실내 면 구분)
 const sun = new THREE.DirectionalLight(0xfff3e0, 2.3); sun.position.set(26, -30, 34); sun.target.position.set(0, 0, 4); sun.castShadow = true;
-Object.assign(sun.shadow.camera, { left: -26, right: 26, top: 26, bottom: -26, near: 5, far: 110 }); sun.shadow.camera.updateProjectionMatrix(); sun.shadow.mapSize.set(PHONE ? 2048 : 4096, PHONE ? 2048 : 4096); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
+Object.assign(sun.shadow.camera, { left: -26, right: 26, top: 26, bottom: -26, near: 5, far: 110 }); sun.shadow.camera.updateProjectionMatrix(); sun.shadow.mapSize.set(PHONE ? 2048 : 4096, PHONE ? 2048 : 4096); sun.shadow.bias = -0.0007; sun.shadow.normalBias = 0;
 const hemi = new THREE.HemisphereLight(0xe9f0f7, 0xb9ada0, 1.3); hemi.position.set(0, 0, 1);
 const f1 = new THREE.DirectionalLight(0xdfe8f2, .35), f2 = new THREE.DirectionalLight(0xfff0dd, .22); f1.position.set(-1, .35, .4); f2.position.set(.3, 1, .2);
 scene.add(sun, sun.target, hemi, f1, f2); R.shadowMap.needsUpdate = true;
