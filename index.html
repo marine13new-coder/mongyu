@@ -56,7 +56,7 @@ const mk = (c, rough = 0.85, o = {}) => { const m = new THREE.MeshStandardMateri
     s.fragmentShader = "varying vec4 vA;varying vec3 vO;uniform float uC;\n" + GLSL + String.fromCharCode(10) + s.fragmentShader.replace("#include <color_fragment>", `#include <color_fragment>
 {vec3 t=pow(vA.rgb,vec3(2.2));int kd=int(floor(vA.a*255.+.5));vec3 fn=normalize(cross(dFdx(vO),dFdy(vO)));float px=max(length(dFdx(vO)),length(dFdy(vO)));
  if(kd==1){float k1=clamp(1.5-px*240.,0.,1.),k2=clamp(1.5-px*60.,0.,1.);t*=1.+(n3(vO*240.)-.5)*.75*k1+(n3(vO*60.)-.5)*.28*k2+(n3(vO*2.2)-.5)*.14;}
- else if(kd==2){vec3 q=abs(fn.z)>.5?vec3(vO.x*2.5,vO.y*46.,vO.z*46.):vec3((vO.x+vO.y)*46.,(vO.x-vO.y)*46.,vO.z*2.5);float k=clamp(1.5-px*46.,0.,1.);t*=1.+(n3(q)-.5)*.5*k+(n3(q*.27)-.5)*.3;}
+ else if(kd==2){vec3 q=abs(fn.z)>.5?vec3(vO.x*2.5,vO.y*46.,vO.z*46.):vec3((vO.x+vO.y)*46.,(vO.x-vO.y)*46.,vO.z*2.5);float k=clamp(1.5-px*46.,0.,1.);t*=1.+(n3(q)-.5)*.5*k+(n3(q*.27)-.5)*.2;}
  else if(kd==3){t*=1.+(n3(vO*1.6)-.5)*.12+(n3(vO*26.)-.5)*.12*clamp(1.5-px*26.,0.,1.);}
  else if(kd==4){t*=1.+(n3(vO*.9)-.5)*.5+(n3(vO*9.)-.5)*.45*clamp(1.5-px*9.,0.,1.);}
  diffuseColor.rgb=mix(diffuseColor.rgb,t,uC);}`); };
@@ -189,7 +189,7 @@ void main(){vec3 c=texture2D(tC,v).rgb;float z=zl(v),ao=0.,w=0.;
    float k=abs(A.z+B.z-2.*p.z)/max(z*z*.012,.006*z);e=max(e,smoothstep(.35,1.6,k));
    e=max(e,.75*smoothstep(.35,.9,1.-dot(nrm(v+d,A),n)));}
   c=mix(c,c*.34,e*mix(.8,.5,uC)*smoothstep(70.,12.,z));}
- c*=mix(1.02,1.5,uC*step(z,2500.));c=(c*(2.51*c+.03))/(c*(2.43*c+.59)+.14);c=pow(clamp(c,0.,1.),vec3(1./2.2));gl_FragColor=vec4(c,1.);}` });
+ c*=mix(1.02,1.38,uC*step(z,2500.));c=(c*(2.51*c+.03))/(c*(2.43*c+.59)+.14);c=mix(vec3(dot(c,vec3(.3,.59,.11))),c,mix(1.,.9,uC));c=pow(clamp(c,0.,1.),vec3(1./2.2));gl_FragColor=vec4(c,1.);}` });
 let want = 1; const SK0 = new THREE.Color(0xdde4ea), SK1 = new THREE.Color(0xb9d3ea);
 $("tint").onclick = () => { want = want ? 0 : 1; $("tint").classList.toggle("on", !!want); $("tint").blur(); };
 $("edge").onclick = () => { const on = fin.uniforms.edge.value < .5; fin.uniforms.edge.value = on ? 1 : 0; $("edge").classList.toggle("on", on); $("edge").blur(); };
@@ -201,7 +201,7 @@ function resize() {
 addEventListener("resize", resize); resize();
 let last = performance.now(), lab = "";
 function frame(now) {
-  requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!rt) return; step(dt); UC.value += (want - UC.value) * Math.min(1, dt * 6); if (Math.abs(want - UC.value) < .003) UC.value = want; SKY.copy(SK0).lerp(SK1, UC.value); scene.background = SKY; scene.fog.color.copy(SKY);
+  requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!rt) return; step(dt); UC.value += (want - UC.value) * Math.min(1, dt * 6); if (Math.abs(want - UC.value) < .003) UC.value = want; hemi.intensity = 1.02 + .3 * UC.value; MAT.glass.opacity = .16 - .08 * UC.value; SKY.copy(SK0).lerp(SK1, UC.value); scene.background = SKY; scene.fog.color.copy(SKY);
   for (const d of doors) { const D = Math.hypot(P.x - d.c[0], P.y - d.c[1]), want = D < (d.open ? 2.2 : 1.6) + (d.far || 0) && Math.abs(P.z - d.c[2]) < 1.2; d.open = want; const t = want ? 1.62 : 0; if (Math.abs(t - d.a) > .002) { d.a += (t - d.a) * Math.min(1, dt * 4.5); d.g.rotation.z = d.sign * d.a; R.shadowMap.needsUpdate = true; } }
   cam.position.set(P.x, P.y, cur + EYE); cam.lookAt(P.x + Math.cos(yaw) * Math.cos(pitch), P.y + Math.sin(yaw) * Math.cos(pitch), cur + EYE + Math.sin(pitch));
   const r = ROOM.find(([, a, b, c, d, e, g]) => P.x > a && P.x < b && P.y > c && P.y < d && P.z > e && P.z < g), nl = fly ? "날아서 보기" : r ? r[0] : "그림 속을 걷는 집"; if (nl !== lab) $("where").textContent = lab = nl;
