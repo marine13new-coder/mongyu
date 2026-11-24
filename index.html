@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>몽유 클레이 워크스루</title>
+<style>
+:root{--ink:#1e1c1a;--paper:#f3efe6;--seal:#b8322a;--grey:#6d675e}
+*{box-sizing:border-box}html,body{margin:0;height:100%;color-scheme:light;overflow:hidden;background:#dfe3e6;font-family:"Malgun Gothic",sans-serif;color:var(--ink);touch-action:none}
+canvas{display:block;position:fixed;inset:0;width:100%;height:100%;cursor:grab}
+#top{position:fixed;left:18px;top:16px;display:flex;gap:10px;align-items:center;pointer-events:none}
+.seal{width:44px;height:44px;background:var(--seal);color:var(--paper);font:bold 15px/1.15 Batang,serif;display:grid;place-items:center;text-align:center}
+#top b{font:bold 19px Batang,serif}#where{font-size:13px;color:var(--grey);margin-top:2px}
+#places{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:96vw}
+button{font:13px "Malgun Gothic",sans-serif;border:1px solid rgba(30,28,26,.18);background:rgba(243,239,230,.88);color:var(--ink);padding:7px 11px;border-radius:3px;cursor:pointer}
+button:hover,button.on{background:var(--ink);color:var(--paper)}
+button:focus-visible{outline:2px solid var(--seal);outline-offset:1px}
+#opts{position:fixed;right:16px;top:16px;display:flex;gap:6px}
+#help{position:fixed;right:16px;top:58px;font-size:12px;line-height:1.75;color:#3c3834;text-align:right;pointer-events:none;text-shadow:0 0 6px #fff}
+#dot{position:fixed;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:rgba(30,28,26,.5);pointer-events:none}
+#cover{position:fixed;inset:0;background:var(--paper);display:grid;place-items:center;text-align:center;z-index:5}
+#cover h1{font:bold 46px Batang,serif;margin:18px 0 4px}#cover p{margin:4px 0;color:var(--grey)}
+#cover .seal{width:84px;height:84px;font-size:28px;margin:0 auto}
+#go{margin-top:22px;padding:13px 34px;font-size:16px;background:var(--ink);color:var(--paper)}#go[disabled]{opacity:.35;cursor:default}
+#stick{position:fixed;left:22px;bottom:110px;width:120px;height:120px;border-radius:50%;background:rgba(30,28,26,.12);display:none}#stick i{position:absolute;left:40px;top:40px;width:40px;height:40px;border-radius:50%;background:rgba(30,28,26,.4)}
+@media (pointer:coarse){#stick{display:block}#help{display:none}}
+</style></head><body><canvas id="c"></canvas>
+<div id="top"><div class="seal">夢<br>遊</div><div><b>몽유 夢遊</b><div id="where"></div></div></div>
+<div id="opts"><button id="fly">날기 F</button><button id="edge" class="on">선 E</button><button id="full">전체화면</button></div>
+<div id="help">W A S D 걷기 · Shift 빨리<br>화면 클릭 → 마우스로 둘러보기 (Esc 해제)<br>또는 끌어서 둘러보기 · 방향키<br>문은 다가가면 열림</div>
+<div id="dot"></div><div id="places"></div><div id="stick"><i></i></div>
+<div id="cover"><div><div class="seal">夢<br>遊</div><h1>몽유 夢遊</h1><p>그림 속을 걷는 집 — 클레이 모델 워크스루</p><p id="msg">모델 여는 중…</p><button id="go" disabled>들어가기</button></div></div>
+<script type="application/json" id="meta">{"groups": [{"name": "clay", "pos": [0, 1093230], "idx": [4372920, 1906947], "tris": 635649}, {"name": "dark", "pos": [12000708, 582699], "idx": [14331504, 1001127], "tris": 333709}, {"name": "door0", "pos": [18336012, 3576], "idx": [18350316, 7020], "tris": 2340}, {"name": "door1", "pos": [18378396, 3576], "idx": [18392700, 7020], "tris": 2340}, {"name": "door2", "pos": [18420780, 3576], "idx": [18435084, 7020], "tris": 2340}, {"name": "door3", "pos": [18463164, 3576], "idx": [18477468, 7020], "tris": 2340}, {"name": "door4", "pos": [18505548, 3576], "idx": [18519852, 7020], "tris": 2340}, {"name": "door5", "pos": [18547932, 3576], "idx": [18562236, 7020], "tris": 2340}, {"name": "door6", "pos": [18590316, 3576], "idx": [18604620, 7020], "tris": 2340}, {"name": "door7", "pos": [18632700, 3576], "idx": [18647004, 7020], "tris": 2340}, {"name": "far_clay", "pos": [18675084, 520044], "idx": [20755260, 366222], "tris": 122074}, {"name": "far_ground", "pos": [22220148, 198153], "idx": [23012760, 371052], "tris": 123684}, {"name": "far_veg", "pos": [24496968, 389088], "idx": [26053320, 741120], "tris": 247040}, {"name": "glass", "pos": [29017800, 2172], "idx": [29026488, 3150], "tris": 1050}, {"name": "ground", "pos": [29039088, 4239], "idx": [29056044, 7590], "tris": 2530}, {"name": "veg", "pos": [29086404, 3870405], "idx": [44568024, 3799596], "tris": 1266532}, {"name": "water", "pos": [59766408, 984], "idx": [59770344, 1476], "tris": 492}], "doors": [{"lo": [-2.367000102996826, -2.7699999809265137, 1.2079999446868896], "hi": [-1.6329998970031738, -2.7300000190734863, 3.2669999599456787], "axis": 0, "sw": 1}, {"lo": [-1.5699999332427979, -5.266999244689941, 1.2079999446868896], "hi": [-1.5299999713897705, -4.5329999923706055, 3.2669999599456787], "axis": 1, "sw": 1}, {"lo": [-2.567000150680542, -2.9700000286102295, 4.457999229431152], "hi": [-1.8329999446868896, -2.930000066757202, 6.4670000076293945], "axis": 0, "sw": 1}, {"lo": [-2.067000150680542, -3.370000123977661, 7.607999801635742], "hi": [-1.3329999446868896, -3.330000162124634, 9.666999816894531], "axis": 0, "sw": 1}, {"lo": [-1.3669999837875366, 3.2799999713897705, 4.4079999923706055], "hi": [-0.6330000162124634, 3.319999933242798, 6.4670000076293945], "axis": 0, "sw": 1}, {"lo": [-4.0169997215271, 4.979999542236328, 4.4079999923706055], "hi": [-3.183000087738037, 5.0199995040893555, 6.567000389099121], "axis": 0, "sw": 1}, {"lo": [-1.4602659940719604, -1.0199999809265137, 4.4079999923706055], "hi": [-0.5401705503463745, -0.9800000190734863, 6.767000198364258], "axis": 0, "sw": 1}, {"lo": [-1.4670000076293945, 1.3050000667572021, 4.4079999923706055], "hi": [-0.5329999923706055, 1.3450000286102295, 6.767000198364258], "axis": 0, "sw": 1}], "col": [59776248, 870930]}</script>
+<script type="module">
+const $ = (i) => document.getElementById(i), msg = (t) => $("msg").textContent = t;
+try {
+const THREE = await import("./three.module.js");
+let done = 0; const part = async (i) => { const r = await fetch(`model${i}.txt`); if (!r.ok) throw new Error("모델 파일을 받지 못했습니다 (" + r.status + ")"); const t = (await r.text()).trim(), bin = atob(t), u = new Uint8Array(bin.length); for (let k = 0; k < bin.length; k++) u[k] = bin.charCodeAt(k); msg(`모델 받는 중… ${++done} / 3`); return u; };
+msg("모델 받는 중… (23 MB)");
+const gz = new Blob(await Promise.all([0, 1, 2].map(part)));
+const META = JSON.parse($("meta").textContent), BUF = await new Response(gz.stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
+msg("장면 만드는 중…"); await new Promise(r => setTimeout(r, 30));
+const F = ([o, n]) => new Float32Array(BUF, o, n), U = ([o, n]) => new Uint32Array(BUF, o, n);
+
+const R = new THREE.WebGLRenderer({ canvas: $("c"), powerPreference: "high-performance", antialias: false });
+R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap; R.shadowMap.autoUpdate = false;
+const PHONE = matchMedia('(pointer:coarse)').matches; R.setPixelRatio(Math.min(devicePixelRatio, PHONE ? 1 : 1.5));
+const scene = new THREE.Scene(); const SKY = new THREE.Color(0xdde4ea); scene.background = SKY; scene.fog = new THREE.Fog(SKY, 120, 1500);
+const cam = new THREE.PerspectiveCamera(68, 1, 0.06, 3000); cam.up.set(0, 0, 1);
+const lin = (r, g, b) => new THREE.Color().setRGB(r, g, b, THREE.LinearSRGBColorSpace);
+const mk = (c, rough = 0.85, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: rough, flatShading: true, side: THREE.DoubleSide, ...o });
+const MAT = { clay: mk(lin(.80, .785, .755)), dark: mk(lin(.34, .335, .325), .7), veg: mk(lin(.60, .65, .57), .95), ground: mk(lin(.56, .55, .53), 1), water: mk(lin(.42, .50, .54), .12, { metalness: .1 }),
+  glass: mk(lin(.62, .72, .76), .05, { transparent: true, opacity: .16, depthWrite: false }) };
+const doors = META.doors.map((d) => ({ ...d, g: new THREE.Group(), a: 0 }));
+for (const g of META.groups) {
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(F(g.pos), 3)); geo.setIndex(new THREE.BufferAttribute(U(g.idx), 1));
+  const base = g.name.replace("far_", ""), dk = base.match(/^door(\d+)$/), m = new THREE.Mesh(geo, dk ? MAT.clay : MAT[base]);
+  const far = g.name.startsWith("far_"); m.castShadow = base !== "glass" && base !== "water" && !far; m.receiveShadow = base !== "glass";
+  if (base === "glass") m.renderOrder = 2;
+  if (dk) {
+    const d = doors[+dk[1]], A = d.axis, T = 1 - A, p = [0, 0, 0]; p[A] = d.lo[A]; p[T] = d.sw > 0 ? d.hi[T] : d.lo[T];
+    m.position.set(-p[0], -p[1], 0); d.g.position.set(p[0], p[1], 0); d.g.add(m); scene.add(d.g);
+    d.c = [(d.lo[0] + d.hi[0]) / 2, (d.lo[1] + d.hi[1]) / 2, d.lo[2]]; d.sign = A === 0 ? d.sw : -d.sw;
+  } else scene.add(m);
+}
+// 빛: 해(그림자) + 하늘 · 바닥 반사 + 약한 보조광 둘 (실내 면 구분)
+const sun = new THREE.DirectionalLight(0xfff3e0, 2.3); sun.position.set(26, -30, 34); sun.target.position.set(0, 0, 4); sun.castShadow = true;
+Object.assign(sun.shadow.camera, { left: -26, right: 26, top: 26, bottom: -26, near: 5, far: 110 }); sun.shadow.mapSize.set(PHONE ? 2048 : 4096, PHONE ? 2048 : 4096); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
+const hemi = new THREE.HemisphereLight(0xe9f0f7, 0xb9ada0, 1.55); hemi.position.set(0, 0, 1);
+const f1 = new THREE.DirectionalLight(0xdfe8f2, .35), f2 = new THREE.DirectionalLight(0xfff0dd, .22); f1.position.set(-1, .35, .4); f2.position.set(.3, 1, .2);
+scene.add(sun, sun.target, hemi, f1, f2); R.shadowMap.needsUpdate = true;
+
+// 충돌: 1 m 격자
+// 열린 자리(미닫이 유리 한 짝 · 대문 앞 흙 틈)는 지나가게: 상자 안 면은 충돌에서 빼고, 빈 바닥은 판으로 메움
+const PASS = [[5.7, 6.1, 2.3, 3.7, 4.2, 7.2], [2.95, 4.1, -3.6, -3.25, 7.4, 10.5], [3.3, 3.5, 2.9, 4.6, 1, 4.2]], PATCH = [[-13.15, -12.55, -1.1, 1.1, 5.25], [-12.25, -11.9, -1.1, 1.1, 5.4]];
+const RAW = F(META.col), KEEP = []; for (let i = 0; i < RAW.length; i += 9) { const m = [0, 1, 2].map(k => (RAW[i + k] + RAW[i + 3 + k] + RAW[i + 6 + k]) / 3); if (!PASS.some(b => m[0] > b[0] && m[0] < b[1] && m[1] > b[2] && m[1] < b[3] && m[2] > b[4] + .25 && m[2] < b[5])) KEEP.push(...RAW.subarray(i, i + 9)); }
+for (const [a, b, c, d, z] of PATCH) KEEP.push(a, c, z, b, c, z, b, d, z, a, c, z, b, d, z, a, d, z);
+const COL = new Float32Array(KEEP), NT = COL.length / 9, G0 = -45, GN = 90, cells = Array.from({ length: GN * GN }, () => []), NZ = new Float32Array(NT), cl = (v) => Math.max(0, Math.min(GN - 1, Math.floor(v - G0)));
+for (let i = 0; i < NT; i++) {
+  const o = i * 9, x = [COL[o], COL[o + 3], COL[o + 6]], y = [COL[o + 1], COL[o + 4], COL[o + 7]], z = [COL[o + 2], COL[o + 5], COL[o + 8]];
+  const ux = x[1] - x[0], uy = y[1] - y[0], uz = z[1] - z[0], vx = x[2] - x[0], vy = y[2] - y[0], vz = z[2] - z[0], nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+  NZ[i] = Math.abs(nz) / (Math.hypot(nx, ny, nz) || 1);
+  for (let a = cl(Math.min(...x)); a <= cl(Math.max(...x)); a++) for (let b = cl(Math.min(...y)); b <= cl(Math.max(...y)); b++) cells[a * GN + b].push(i);
+}
+function ground(x, y, zmax) {
+  let best = -1e9; if (Math.abs(x) > 44 || Math.abs(y) > 44) return best;
+  for (const i of cells[cl(x) * GN + cl(y)]) { if (NZ[i] < .3) continue; const o = i * 9;
+    const ax = COL[o], ay = COL[o + 1], bx = COL[o + 3], by = COL[o + 4], cx = COL[o + 6], cy = COL[o + 7];
+    const d = (by - cy) * (ax - cx) + (cx - bx) * (ay - cy); if (Math.abs(d) < 1e-9) continue;
+    const l1 = ((by - cy) * (x - cx) + (cx - bx) * (y - cy)) / d, l2 = ((cy - ay) * (x - cx) + (ax - cx) * (y - cy)) / d, l3 = 1 - l1 - l2;
+    if (l1 < -1e-4 || l2 < -1e-4 || l3 < -1e-4) continue;
+    const z = l1 * COL[o + 2] + l2 * COL[o + 5] + l3 * COL[o + 8]; if (z <= zmax && z > best) best = z; }
+  return best;
+}
+const under = (x, y, z) => Math.max(ground(x, y, z), ground(x + .12, y, z), ground(x - .12, y, z), ground(x, y + .12, z), ground(x, y - .12, z));   // 좁은 틈에 안 빠지게
+const RAD = .2, HS = [.52, .95, 1.45];
+function push(p) {                                              // 벽에서 밀어내기
+  for (let it = 0; it < 3; it++) { let moved = false;
+    for (let a = cl(p.x - RAD); a <= cl(p.x + RAD); a++) for (let b = cl(p.y - RAD); b <= cl(p.y + RAD); b++) for (const i of cells[a * GN + b]) {
+      if (NZ[i] > .75) continue; const o = i * 9;
+      for (const h of HS) { const H = p.z + h, q = [];
+        for (let e = 0; e < 3; e++) { const s = o + e * 3, t = o + ((e + 1) % 3) * 3, z0 = COL[s + 2] - H, z1 = COL[t + 2] - H; if ((z0 < 0) !== (z1 < 0)) { const k = z0 / (z0 - z1); q.push(COL[s] + (COL[t] - COL[s]) * k, COL[s + 1] + (COL[t + 1] - COL[s + 1]) * k); } }
+        if (q.length < 4) continue;
+        const dx = q[2] - q[0], dy = q[3] - q[1], L = dx * dx + dy * dy, k = L ? Math.max(0, Math.min(1, ((p.x - q[0]) * dx + (p.y - q[1]) * dy) / L)) : 0, ex = p.x - q[0] - dx * k, ey = p.y - q[1] - dy * k, D = Math.hypot(ex, ey);
+        if (D < RAD && D > 1e-6) { p.x += ex / D * (RAD - D); p.y += ey / D * (RAD - D); moved = true; } } }
+    if (!moved) break; }
+}
+// 걷기
+const P = { x: -15, y: .3, z: 6.2, vz: 0 }, EYE = 1.58; let yaw = 0, pitch = 0, fly = false, cur = P.z; const K = {};
+const PL = [["대문 앞", -15.5, .3, 6.4, 0, -.02], ["협곡", -8, 0, 5.8, 0, -.1], ["도원 마당", 9.6, -1.6, 1.5, 180, .12], ["도원 홀", 2.2, -4.6, 1.4, 45, .06], ["부엌", 0, -4.3, 1.4, 185, -.12], ["갤러리", 0, 3, 1.4, 0, 0],
+  ["현관 · 서재", -.6, -3.5, 4.6, -125, -.05], ["화실", -2.6, 2.2, 4.6, 150, 0], ["사랑방", .4, 2.4, 4.6, 10, -.03], ["누마루", 7, 3, 4.6, 0, -.05], ["안방", 2.0, -2.6, 7.8, 0, 0], ["로지아", 4.0, -4.4, 7.8, -40, -.1], ["조감", 16, -15, 13, 136, -.46]];
+function settle() { const g = ground(P.x, P.y, P.z + .6); if (g > -1e8) P.z = g; cur = P.z; P.vz = 0; }
+function go(k) { const [n, x, y, z, a, b] = PL[k]; Object.assign(P, { x, y, z }); yaw = a * Math.PI / 180; pitch = b; setFly(n === "조감"); if (!fly) settle(); cur = P.z; if (document.activeElement) document.activeElement.blur(); }
+function setFly(v) { fly = v; $("fly").classList.toggle("on", v); P.vz = 0; }
+PL.forEach(([n], k) => { const b = document.createElement("button"); b.textContent = n; b.onclick = () => go(k); $("places").append(b); });
+const ROOM = [["도원 홀", 1.4, 4.9, -5.7, -1.3, 1, 4], ["부엌", -1.6, 1.4, -5.7, -2.8, 1, 4], ["다용도실", -2.9, -1.6, -5.7, -4.1, 1, 4], ["화장실", -2.5, -1.2, -2.9, -1.4, 1, 4], ["갤러리 · 판화실", -.9, 3.4, 1.3, 4.7, 1, 4], ["현관 · 서재", -2.9, .3, -5.7, -2.9, 4.2, 7], ["현관", -1.7, .3, -2.9, -1.2, 4.2, 7], ["욕실", -2.9, -1.6, -3, -1.3, 4.2, 7],
+  ["화실", -6.2, -1.8, 1.3, 4.7, 4.2, 7], ["사랑채 현관", -1.8, -.2, 1.3, 3.25, 4.2, 7], ["화장실", -1.8, -.2, 3.25, 4.7, 4.2, 7], ["사랑방", -.2, 5.95, 1.3, 4.8, 4.2, 7], ["누마루", 5.95, 8.6, 1.2, 4.9, 4.2, 7], ["안방", 1.4, 4.9, -3.45, -1.3, 7.4, 10], ["로지아", 2.9, 5.2, -6, -3.45, 7.4, 10], ["욕실", -2.9, -.7, -3.4, -1.3, 7.4, 10], ["드레스룸", -2.9, .3, -5.7, -3.4, 7.4, 10], ["계단 틈", .2, 1.4, -5.8, -1.2, 1, 11], ["협곡", -12.6, 8, -1.1, 1.1, 1, 7]];
+const cv = $("c"); let drag = null;
+cv.addEventListener("pointerdown", (e) => { drag = [e.clientX, e.clientY, 0]; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener("pointermove", (e) => { let dx = 0, dy = 0, s = .0022; if (document.pointerLockElement === cv) { dx = e.movementX; dy = e.movementY; } else if (drag) { dx = -(e.clientX - drag[0]); dy = -(e.clientY - drag[1]); drag[2] += Math.abs(dx) + Math.abs(dy); drag[0] = e.clientX; drag[1] = e.clientY; s = .0038; } else return;
+  yaw -= dx * s; pitch = Math.max(-1.45, Math.min(1.45, pitch - dy * s)); });
+cv.addEventListener("pointerup", (e) => { if (drag && drag[2] < 4 && e.pointerType === "mouse" && !document.pointerLockElement) { try { const r = cv.requestPointerLock(); if (r && r.catch) r.catch(() => {}); } catch (_) {} } drag = null; });
+addEventListener("keydown", (e) => { if (e.ctrlKey || e.metaKey) return; K[e.code] = 1; if (e.code === "KeyF") setFly(!fly); if (e.code === "KeyE") $("edge").click(); if (/^Arrow|Space/.test(e.code)) e.preventDefault(); });
+addEventListener("keyup", (e) => K[e.code] = 0); addEventListener("blur", () => { for (const k in K) K[k] = 0; });
+$("fly").onclick = () => { setFly(!fly); $("fly").blur(); }; $("full").onclick = () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.().catch(() => {}); $("full").blur(); };
+const st = { x: 0, y: 0 }; { const s = $("stick"), i = s.firstElementChild; const mv = (e) => { const r = s.getBoundingClientRect(); let x = (e.clientX - r.left - 60) / 50, y = (e.clientY - r.top - 60) / 50; const l = Math.max(1, Math.hypot(x, y)); st.x = x / l; st.y = -y / l; i.style.transform = `translate(${st.x * 40}px,${-st.y * 40}px)`; };
+  s.addEventListener("pointerdown", (e) => { s.setPointerCapture(e.pointerId); mv(e); }); s.addEventListener("pointermove", (e) => { if (e.buttons) mv(e); }); s.addEventListener("pointerup", () => { st.x = st.y = 0; i.style.transform = ""; }); }
+
+function step(dt) {
+  const tr = (K.ArrowLeft ? 1 : 0) - (K.ArrowRight ? 1 : 0); yaw += tr * dt * 1.6;
+  let f = (K.KeyW || K.ArrowUp ? 1 : 0) - (K.KeyS || K.ArrowDown ? 1 : 0) + st.y, r = (K.KeyD ? 1 : 0) - (K.KeyA ? 1 : 0) + st.x; const l = Math.hypot(f, r); if (l > 1) { f /= l; r /= l; }
+  const v = (K.ShiftLeft || K.ShiftRight ? 2.2 : 1) * (fly ? 4.5 : 1.75), cy = Math.cos(yaw), sy = Math.sin(yaw);
+  if (fly) { const cp = Math.cos(pitch); P.x += (cy * cp * f + sy * r) * v * dt; P.y += (sy * cp * f - cy * r) * v * dt; P.z += (Math.sin(pitch) * f + (K.Space ? 1 : 0) - (K.KeyC ? 1 : 0)) * v * dt; cur = P.z; return; }
+  let n = Math.max(1, Math.ceil(v * dt / .08)); const dx = (cy * f + sy * r) * v * dt / n, dy = (sy * f - cy * r) * v * dt / n;
+  while (n--) { const ox = P.x, oy = P.y, oz = P.z; P.x += dx; P.y += dy; push(P); const g = under(P.x, P.y, P.z + .42);
+    if (g < P.z - 2.2) { P.x = ox; P.y = oy; P.z = oz; break; }        // 낭떠러지 앞에서 멈춤
+    if (g >= P.z - .45) { P.z = g; P.vz = 0; } }
+  const g = under(P.x, P.y, P.z + .42); if (g < P.z - .01) { P.vz += 9.8 * dt; P.z = Math.max(g, P.z - P.vz * dt); } else P.vz = 0;
+  cur += (P.z - cur) * Math.min(1, dt * 12);
+}
+
+// 후처리: 화면 공간 그늘(AO) + 모델 선
+let rt, aoT; const size = new THREE.Vector2();
+const tri = new THREE.BufferGeometry(); tri.setAttribute("position", new THREE.BufferAttribute(new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]), 3));
+const qs = new THREE.Scene(), qc = new THREE.Camera(), qm = new THREE.Mesh(tri); qm.frustumCulled = false; qs.add(qm);
+const VS = "varying vec2 v;void main(){v=position.xy*.5+.5;gl_Position=vec4(position.xy,0.,1.);}";
+const COMMON = `varying vec2 v;uniform sampler2D tD;uniform mat4 iP,Pm;uniform vec2 px;
+vec3 vp(vec2 u){float d=texture2D(tD,u).x;vec4 p=iP*vec4(vec3(u,d)*2.-1.,1.);return p.xyz/p.w;}
+vec3 nrm(vec2 u,vec3 p){vec3 l=vp(u-vec2(px.x,0.)),r=vp(u+vec2(px.x,0.)),d=vp(u-vec2(0.,px.y)),t=vp(u+vec2(0.,px.y));
+ vec3 a=abs(l.z-p.z)<abs(r.z-p.z)?p-l:r-p,b=abs(d.z-p.z)<abs(t.z-p.z)?p-d:t-p;return normalize(cross(a,b));}`;
+const aoM = new THREE.ShaderMaterial({ depthTest: false, depthWrite: false, vertexShader: VS, uniforms: { tD: {}, iP: { value: cam.projectionMatrixInverse }, Pm: { value: cam.projectionMatrix }, px: { value: new THREE.Vector2() } },
+  fragmentShader: COMMON + `
+void main(){vec3 p=vp(v);if(-p.z>90.){gl_FragColor=vec4(1.);return;}vec3 n=nrm(v,p);
+ float a=fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))))*6.2832,s=0.,w=0.;
+ for(int i=0;i<20;i++){float fi=(float(i)+.5)/20.,an=a+float(i)*2.39996,big=float(i-2*(i/2));float R=mix(.22,1.1,big);
+  vec2 o=vec2(cos(an),sin(an))*sqrt(fi)*R*vec2(Pm[0][0],Pm[1][1])*.5/max(-p.z,.2);vec3 q=vp(v+o)-p;float L=length(q);
+  s+=max(0.,dot(n,q)/(L+1e-4)-.09)*smoothstep(R*1.4,R*.2,L);w+=1.;}
+ gl_FragColor=vec4(vec3(clamp(1.-1.75*s/w,0.,1.)),1.);}` });
+const fin = new THREE.ShaderMaterial({ depthTest: false, depthWrite: false, vertexShader: VS, uniforms: { tC: {}, tD: {}, tA: {}, iP: aoM.uniforms.iP, Pm: aoM.uniforms.Pm, px: aoM.uniforms.px, edge: { value: 1 } },
+  fragmentShader: COMMON + `uniform sampler2D tC,tA;uniform float edge;
+float zl(vec2 u){return -vp(u).z;}
+void main(){vec3 c=texture2D(tC,v).rgb;float z=zl(v),ao=0.,w=0.;
+ for(int x=-2;x<2;x++)for(int y=-2;y<2;y++){vec2 u=v+(vec2(x,y)+.5)*px;float k=exp(-abs(zl(u)-z)*14./max(z*.15,.2));ao+=texture2D(tA,u).x*k;w+=k;}
+ ao/=max(w,1e-3);c*=mix(vec3(.30,.29,.31),vec3(1.),pow(ao,1.35));
+ if(edge>.5&&z<70.){vec3 p=vp(v),n=nrm(v,p);float e=0.;
+  for(int i=0;i<2;i++){vec2 d=i==0?vec2(px.x,0.):vec2(0.,px.y);vec3 A=vp(v+d),B=vp(v-d);
+   float k=abs(A.z+B.z-2.*p.z)/max(z*z*.012,.006*z);e=max(e,smoothstep(.35,1.6,k));
+   e=max(e,.75*smoothstep(.35,.9,1.-dot(nrm(v+d,A),n)));}
+  c=mix(c,c*.34,e*.8*smoothstep(70.,12.,z));}
+ c*=1.02;c=(c*(2.51*c+.03))/(c*(2.43*c+.59)+.14);c=pow(clamp(c,0.,1.),vec3(1./2.2));gl_FragColor=vec4(c,1.);}` });
+$("edge").onclick = () => { const on = fin.uniforms.edge.value < .5; fin.uniforms.edge.value = on ? 1 : 0; $("edge").classList.toggle("on", on); $("edge").blur(); };
+function resize() {
+  const w = innerWidth, h = innerHeight; if (!w || !h) return; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); R.getDrawingBufferSize(size);
+  rt?.dispose(); aoT?.dispose(); rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: PHONE ? 0 : 4 }); rt.depthTexture = new THREE.DepthTexture(size.x, size.y, THREE.UnsignedIntType); aoT = new THREE.WebGLRenderTarget(size.x, size.y);
+  aoM.uniforms.tD = fin.uniforms.tD = { value: rt.depthTexture }; fin.uniforms.tC.value = rt.texture; fin.uniforms.tA.value = aoT.texture; aoM.uniforms.px.value.set(1 / size.x, 1 / size.y);
+}
+addEventListener("resize", resize); resize();
+let last = performance.now(), lab = "";
+function frame(now) {
+  requestAnimationFrame(frame); const dt = Math.min(.05, (now - last) / 1000); last = now; if (!rt) return; step(dt);
+  for (const d of doors) { const D = Math.hypot(P.x - d.c[0], P.y - d.c[1]), want = D < (d.open ? 2.2 : 1.6) && Math.abs(P.z - d.c[2]) < 1.2; d.open = want; const t = want ? 1.62 : 0; if (Math.abs(t - d.a) > .002) { d.a += (t - d.a) * Math.min(1, dt * 4.5); d.g.rotation.z = d.sign * d.a; R.shadowMap.needsUpdate = true; } }
+  cam.position.set(P.x, P.y, cur + EYE); cam.lookAt(P.x + Math.cos(yaw) * Math.cos(pitch), P.y + Math.sin(yaw) * Math.cos(pitch), cur + EYE + Math.sin(pitch));
+  const r = ROOM.find(([, a, b, c, d, e, g]) => P.x > a && P.x < b && P.y > c && P.y < d && P.z > e && P.z < g), nl = fly ? "날아서 보기" : r ? r[0] : "그림 속을 걷는 집"; if (nl !== lab) $("where").textContent = lab = nl;
+  R.setRenderTarget(rt); R.render(scene, cam); qm.material = aoM; R.setRenderTarget(aoT); R.render(qs, qc); qm.material = fin; R.setRenderTarget(null); R.render(qs, qc);
+}
+go(0); R.compile(scene, cam); requestAnimationFrame(frame);
+window.__w = { P, go, PL, ground, push, set: (a, b) => { yaw = a; pitch = b; }, R, K, step, doors, get fly() { return fly; } };
+msg("W A S D 로 걷고 마우스로 둘러봅니다"); $("go").disabled = false; $("go").onclick = () => { $("cover").remove(); }; $("go").focus();
+} catch (e) { msg("열지 못했습니다: " + e.message); console.error(e); }
+</script>
+</body></html>
